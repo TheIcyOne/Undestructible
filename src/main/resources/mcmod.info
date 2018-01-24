@@ -1,0 +1,16 @@
+[
+{
+  "modid": "undestructible",
+  "name": "Undestructible",
+  "description": "Make your structures undestructible.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "modoff.info",
+  "updateUrl": "",
+  "authorList": ["The_Icy_One"],
+  "credits": "The seagull of wire, for teaching me the difference between memes and memes and dreams.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
