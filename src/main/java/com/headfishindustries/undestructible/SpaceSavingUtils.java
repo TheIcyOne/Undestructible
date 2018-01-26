@@ -1,5 +1,8 @@
 package com.headfishindustries.undestructible;
 
+import com.headfishindustries.undestructible.WorldStructure.BlockData;
+
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -19,25 +22,28 @@ public class SpaceSavingUtils {
 		tag.setLong("START", start.toLong());
 		tag.setLong("END", end.toLong());
 		
-		NBTTagCompound blocks = new NBTTagCompound();
-		NBTTagList tiles = new NBTTagList();
+		NBTTagCompound blockdata = new NBTTagCompound();
 	
 		for (int x = Math.min(start.getX(), end.getX()); x<=Math.max(start.getX(), end.getX()); x++){
 			for (int y = Math.min(start.getY(), end.getY()); y<=Math.max(start.getY(), end.getY()); y++){
 				for (int z = Math.min(start.getZ(), end.getZ()); z<=Math.max(start.getZ(), end.getZ()); z++){
 					pos = new BlockPos(x, y, z);
-					world.getBlockState(pos);
-					blocks.setString("" + pos.toLong(), world.getBlockState(pos).toString().split("@")[0]);
+					
+					BlockData bd = new WorldStructure.BlockData(world.getBlockState(pos), new NBTTagCompound());
+					
 					
 					if (world.getTileEntity(pos) != null){
-						tiles.set(tiles.tagCount(), world.getTileEntity(pos).serializeNBT());
+						//tiles.set(tiles.tagCount(), world.getTileEntity(pos).serializeNBT());
+						bd.tile = world.getTileEntity(pos).serializeNBT();
 					}
+					
+					blockdata.setTag("" + pos.toLong(), bd.toNBT());
 				}
 			}
 		}
 		
-		tag.setTag("BLOCKS", blocks);
-		tag.setTag("TILES", tiles);
+		tag.setTag("BLOCKS", blockdata);
+//		tag.setTag("TILES", tiles);
 		
 		return tag;
 	}
