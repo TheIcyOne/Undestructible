@@ -20,12 +20,14 @@ import net.minecraft.world.World;
 
 public class SpaceSavingUtils {
 	/** Takes input of 2 corner positions, returns an NBT tag holding all blocks within the area.**/
-	public static NBTTagCompound areaToNBT(BlockPos start, BlockPos end, World world){
+	public static NBTTagCompound areaToNBT(World world, BlockPos start, BlockPos end, int ticksPer, int blocksPer){
 		NBTTagCompound tag = new NBTTagCompound();
 		BlockPos pos;
 		
 		tag.setLong("START", start.toLong());
 		tag.setLong("END", end.toLong());
+		tag.setInteger("TICKS_CYCLE", ticksPer);
+		tag.setInteger("BLOCKS_CYCLE", blocksPer);
 		tag.setBoolean("ACTIVE", true);
 		
 		NBTTagCompound blockdata = new NBTTagCompound();
@@ -94,9 +96,18 @@ public class SpaceSavingUtils {
 		List<NBTTagCompound> ls = new ArrayList<NBTTagCompound>();
 		for (int i = 0; i <= firstAvailableID(world); i++){
 			NBTTagCompound x = readFromFile(i, world);
-			if (x != null || !isActive(x)){
+			if (x != null && isActive(x)){
 				ls.add(x);
 			}
+		}
+		return ls;
+	}
+	
+	public static List<WorldStructure> allActiveStruct(World world){
+		List<WorldStructure> ls = new ArrayList<WorldStructure>();
+		for (NBTTagCompound nbt : allActive(world)){
+			WorldStructure s = new WorldStructure(nbt);
+			if (nbt.getBoolean("ACTIVE")) ls.add(s);
 		}
 		return ls;
 	}

@@ -17,27 +17,33 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class WorldStructure {
 	
-	private BlockPos start;
-	private BlockPos end;
+	private BlockPos start, end;
 	private Map<BlockPos, BlockData> blockMap = new HashMap<BlockPos, BlockData>();
 	private World world;
+	private int ticks, blocks;
+
 	
 
 	public WorldStructure(NBTTagCompound structTag){
 		this.parseNBT(structTag);
 	}
 	
+	
 	/** I'll probably use this later if I want to build things in different places. **/
-	public WorldStructure(BlockPos startPos, BlockPos endPos, NBTTagCompound structTag, World worldIn) {
+	public WorldStructure(BlockPos startPos, BlockPos endPos, NBTTagCompound structTag, World worldIn, int ticksCycle, int blocksCycle) {
 		this.parseNBT(structTag);
 		this.start = startPos;
 		this.end = endPos;
 		this.world = worldIn;
+		this.ticks = ticksCycle;
+		this.blocks = blocksCycle;
 	}
 	
 	private void parseNBT(NBTTagCompound struct){
 		this.start = BlockPos.fromLong(struct.getLong("START"));
 		this.end = BlockPos.fromLong(struct.getLong("END"));
+		this.ticks = struct.getInteger("TICKS_CYCLE");
+		this.blocks = struct.getInteger("BLOCKS_CYCLE");
 		BlockPos pos;
 		
 		for (int x = Math.min(start.getX(), end.getX()); x<=Math.max(start.getX(), end.getX()); x++){
@@ -48,16 +54,25 @@ public class WorldStructure {
 				}
 			}
 		}		
-		//TODO: Tiles
-	//	NBTTagList tiles = struct.getTagList("TILES", 8);
-/*		for (int i = 0; i < tiles.tagCount(); i++){
-			TileEntity e = null;
-			e.deserializeNBT(tiles.getCompoundTagAt(i));
-			tileList.add(e);
-		}*/		
 	}
 	
-	private void buildPos(BlockPos pos){
+	public BlockPos randomPos(){
+		int x = world.rand.nextInt(this.start.getX() - this.end.getX()) + end.getX();
+		int y = world.rand.nextInt(this.start.getY() - this.end.getY()) + end.getY();
+		int z = world.rand.nextInt(this.start.getZ() - this.end.getZ()) + end.getZ();
+
+		return new BlockPos(x, y, z);
+	}
+	
+	public Integer blocksPerCycle(){
+		return this.blocks;
+	}
+	
+	public Integer ticksPerCycle(){
+		return this.ticks;
+	}
+	
+	public void buildPos(BlockPos pos){
 		BlockData bd = blockMap.get(pos);
 		world.setBlockState(pos, bd.block, 2);
 		if (!bd.tile.hasNoTags()){
