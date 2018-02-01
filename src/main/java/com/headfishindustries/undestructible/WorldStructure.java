@@ -29,6 +29,7 @@ public class WorldStructure {
 	}
 	
 	
+	
 	/** I'll probably use this later if I want to build things in different places. **/
 	public WorldStructure(BlockPos startPos, BlockPos endPos, NBTTagCompound structTag, World worldIn, int ticksCycle, int blocksCycle) {
 		this.parseNBT(structTag);
@@ -102,6 +103,7 @@ public class WorldStructure {
 
 		public NBTTagCompound toNBT(){
 			NBTTagCompound tag = new NBTTagCompound();
+			Integer id = Block.getStateId(this.block);
 			tag.setInteger("id", Block.getStateId(this.block));
 //			tag.setInteger("meta", meta);
 			

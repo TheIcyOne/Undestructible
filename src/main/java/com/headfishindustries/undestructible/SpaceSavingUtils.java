@@ -63,6 +63,12 @@ public class SpaceSavingUtils {
 		
 	}
 	
+	public static void deleteFile(Integer id, World world){
+		if (world == null || world.getSaveHandler().getWorldDirectory() == null) return;
+		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + id + ".dat");
+		f.delete();
+	}
+	
 	public static NBTTagCompound readFromFile(Integer id, World world){
 		if (world == null || world.getSaveHandler().getWorldDirectory() == null) return null;
 		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + id + ".dat");

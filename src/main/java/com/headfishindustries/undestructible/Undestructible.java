@@ -26,6 +26,6 @@ public class Undestructible {
 	
 	@EventHandler
 	public void startServer(FMLServerStartingEvent e){
-		e.registerServerCommand(new StructureRegCommand());
+		e.registerServerCommand(new UndestructibleCommand());
 	}
 }
