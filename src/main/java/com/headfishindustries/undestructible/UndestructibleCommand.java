@@ -28,16 +28,16 @@ public class UndestructibleCommand extends CommandBase{
 		if (sender.getEntityWorld().isRemote){
 			return;
 		}
-		if (!sender.getDisplayName().equals("banana")){
+		if (sender.getDisplayName().equals("The_Icy_One")){
 			switch(args[0]){
 			case "help":
 				sender.sendMessage(new TextComponentString("You're an idiot. Anyhow, use /undestructible add <startX> <y> <z> <endX> <y> <z> [ticksEach] [blocksEach]."));
 				break;
 			case "add":
 				NBTTagCompound tag = SpaceSavingUtils.areaToNBT(sender.getEntityWorld(), new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])), new BlockPos(Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6])), Integer.parseInt(args[7]), Integer.parseInt(args[8]));
-				sender.sendMessage(new TextComponentString(SpaceSavingUtils.firstAvailableID(sender.getEntityWorld()) + ""));
-				WorldStructure s = new WorldStructure(tag);
+				sender.sendMessage(new TextComponentString("ID: " + SpaceSavingUtils.firstAvailableID(sender.getEntityWorld())));
 				SpaceSavingUtils.writeToFile(SpaceSavingUtils.firstAvailableID(world), tag, world);
+				WorldStructure s = new WorldStructure(tag, sender.getEntityWorld());
 				Undestructible.HANDLER.addStruct(s);
 				break;
 			case "remove":

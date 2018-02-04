@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -24,7 +28,8 @@ public class WorldStructure {
 
 	
 
-	public WorldStructure(NBTTagCompound structTag){
+	public WorldStructure(NBTTagCompound structTag, World worldIn){
+		this.world = worldIn;
 		this.parseNBT(structTag);
 	}
 	
@@ -45,24 +50,41 @@ public class WorldStructure {
 		this.end = BlockPos.fromLong(struct.getLong("END"));
 		this.ticks = struct.getInteger("TICKS_CYCLE");
 		this.blocks = struct.getInteger("BLOCKS_CYCLE");
+		
+		NBTTagCompound blocks = struct.getCompoundTag("BLOCKS");
 		BlockPos pos;
 		
 		for (int x = Math.min(start.getX(), end.getX()); x<=Math.max(start.getX(), end.getX()); x++){
 			for (int y = Math.min(start.getY(), end.getY()); y<=Math.max(start.getY(), end.getY()); y++){
 				for (int z = Math.min(start.getZ(), end.getZ()); z<=Math.max(start.getZ(), end.getZ()); z++){
 					pos = new BlockPos(x, y, z);
-					blockMap.put(pos, BlockData.fromNBT((NBTTagCompound) struct.getTag("" + pos.toLong())));
+					NBTTagCompound block = blocks.getCompoundTag(pos.toString());
+					Boolean b = blocks.hasKey(pos.toString());
+					BlockData bd = BlockData.fromNBT(block);
+					blockMap.put(pos, bd);
 				}
 			}
 		}		
 	}
 	
 	public BlockPos randomPos(){
-		int x = world.rand.nextInt(this.start.getX() - this.end.getX()) + end.getX();
-		int y = world.rand.nextInt(this.start.getY() - this.end.getY()) + end.getY();
-		int z = world.rand.nextInt(this.start.getZ() - this.end.getZ()) + end.getZ();
+				
+		int x = randInt(start.getX(), end.getX());
+		int y = randInt(start.getY(), end.getY());
+		int z = randInt(start.getZ(), end.getZ());
 
 		return new BlockPos(x, y, z);
+	}
+	
+	private int randInt(int a, int b){
+		int i = Math.max(a, b);
+		int j = Math.min(a, b);
+		
+		int k = ThreadLocalRandom.current().nextInt(j, i + 1);
+		
+		//int k = (int) Math.floor(world.rand.nextDouble() * (i - j + 1) - j);
+		
+		return k;
 	}
 	
 	public Integer blocksPerCycle(){
@@ -74,9 +96,10 @@ public class WorldStructure {
 	}
 	
 	public void buildPos(BlockPos pos){
+		//Undestructible.LOGGER.info("Setting block at pos " + pos);
 		BlockData bd = blockMap.get(pos);
 		world.setBlockState(pos, bd.block, 2);
-		if (!bd.tile.hasNoTags()){
+		if (bd.tile != null && !bd.tile.hasNoTags()){
 			world.getTileEntity(pos).readFromNBT(bd.tile);
 		}
 	}
@@ -104,7 +127,7 @@ public class WorldStructure {
 		public NBTTagCompound toNBT(){
 			NBTTagCompound tag = new NBTTagCompound();
 			Integer id = Block.getStateId(this.block);
-			tag.setInteger("id", Block.getStateId(this.block));
+			tag.setInteger("id", id);
 //			tag.setInteger("meta", meta);
 			
 			if(tile != null){

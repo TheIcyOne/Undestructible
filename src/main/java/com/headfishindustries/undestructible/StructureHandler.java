@@ -32,6 +32,7 @@ public class StructureHandler {
 	}
 	
 	private void tickStruct(WorldStructure struct){
+		this.timeMap.putIfAbsent(struct, 0);
 		if (timeMap.get(struct) >= struct.ticksPerCycle()){
 			timeMap.put(struct, 0);
 			for (int i = 0; i < struct.blocksPerCycle(); i++){
@@ -45,6 +46,7 @@ public class StructureHandler {
 	
 	@SubscribeEvent
 	public void onTick(WorldTickEvent e){
+		if (e.world.isRemote) return;
 		for (WorldStructure struct : this.structs){
 			tickStruct(struct);
 		}

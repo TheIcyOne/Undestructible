@@ -11,6 +11,7 @@ import java.util.List;
 import com.headfishindustries.undestructible.WorldStructure.BlockData;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -40,11 +41,15 @@ public class SpaceSavingUtils {
 					if (world.getTileEntity(pos) != null){
 						bd.tile = world.getTileEntity(pos).serializeNBT();
 					}
-					blockdata.setTag("" + pos.toLong(), bd.toNBT());
+					blockdata.setTag(pos.toString(), bd.toNBT());
 				}
 			}
 		}
+		
 		tag.setTag("BLOCKS", blockdata);
+		
+/*		Undestructible.LOGGER.info(tag.getTag("BLOCKS"));
+		Undestructible.LOGGER.info(tag.getTag("BLOCKS").getClass());*/
 		
 		return tag;
 	}
@@ -54,6 +59,7 @@ public class SpaceSavingUtils {
 		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + id + ".dat");
 		try{
 			f.getParentFile().mkdirs();
+			f.setWritable(true);
 			DataOutputStream s = new DataOutputStream(new FileOutputStream(f));
 			CompressedStreamTools.write(nbt, s);
 			s.close();
@@ -66,13 +72,14 @@ public class SpaceSavingUtils {
 	public static void deleteFile(Integer id, World world){
 		if (world == null || world.getSaveHandler().getWorldDirectory() == null) return;
 		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + id + ".dat");
+		Undestructible.LOGGER.info("Deleting saved structure: " + f.getAbsolutePath());
 		f.delete();
 	}
 	
 	public static NBTTagCompound readFromFile(Integer id, World world){
 		if (world == null || world.getSaveHandler().getWorldDirectory() == null) return null;
 		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + id + ".dat");
-		if (!f.exists()){Undestructible.LOGGER.error("Tried to read a nonexistent file. Halp."); return null;}
+		if (!f.exists()){return null;}
 		try{
 			DataInputStream s = new DataInputStream(new FileInputStream(f));
 			NBTTagCompound t = CompressedStreamTools.read(s);
@@ -112,7 +119,7 @@ public class SpaceSavingUtils {
 	public static List<WorldStructure> allActiveStruct(World world){
 		List<WorldStructure> ls = new ArrayList<WorldStructure>();
 		for (NBTTagCompound nbt : allActive(world)){
-			WorldStructure s = new WorldStructure(nbt);
+			WorldStructure s = new WorldStructure(nbt, world);
 			if (nbt.getBoolean("ACTIVE")) ls.add(s);
 		}
 		return ls;
