@@ -28,7 +28,7 @@ public class UndestructibleCommand extends CommandBase{
 		if (sender.getEntityWorld().isRemote){
 			return;
 		}
-		if (sender.getName().equals("The_Icy_One")){
+		if (sender.canUseCommand(this.getRequiredPermissionLevel(), this.getName())){
 			switch(args[0]){
 			case "help":
 				sender.sendMessage(new TextComponentString("You're an idiot. Anyhow, use /undestructible add <startX> <y> <z> <endX> <y> <z> [ticksEach] [blocksEach]."));
@@ -51,7 +51,7 @@ public class UndestructibleCommand extends CommandBase{
 			}
 			
 		}else{
-			sender.sendMessage(new TextComponentString("If you're not me, this won't do anything anyway. Sorry 'bout that."));
+			sender.sendMessage(new TextComponentString("You do not have permission to use this command."));
 		}
 		
 	}
