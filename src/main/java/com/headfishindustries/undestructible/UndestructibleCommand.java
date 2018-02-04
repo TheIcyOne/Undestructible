@@ -58,7 +58,7 @@ public class UndestructibleCommand extends CommandBase{
 
 	@Override
 	public int getRequiredPermissionLevel() {
-		return 2;
+		return 0;
 	}
 
 }
