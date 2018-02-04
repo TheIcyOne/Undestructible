@@ -28,7 +28,7 @@ public class UndestructibleCommand extends CommandBase{
 		if (sender.getEntityWorld().isRemote){
 			return;
 		}
-		if (sender.getDisplayName().equals("The_Icy_One")){
+		if (sender.getName().equals("The_Icy_One")){
 			switch(args[0]){
 			case "help":
 				sender.sendMessage(new TextComponentString("You're an idiot. Anyhow, use /undestructible add <startX> <y> <z> <endX> <y> <z> [ticksEach] [blocksEach]."));
