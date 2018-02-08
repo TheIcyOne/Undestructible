@@ -55,6 +55,11 @@ public class UndestructibleCommand extends CommandBase{
 		}
 		
 	}
+	
+	@Override
+	public boolean checkPermission(MinecraftServer server, ICommandSender sender){
+		return sender.canUseCommand(2, "undestructible");
+	}
 
 	@Override
 	public int getRequiredPermissionLevel() {
