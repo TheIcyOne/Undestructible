@@ -56,7 +56,7 @@ public class SpaceSavingUtils {
 	
 	public static void writeToFile(Integer id, NBTTagCompound nbt, World world){
 		if (world == null || world.getSaveHandler().getWorldDirectory() == null) return;
-		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + id + ".dat");
+		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + world.provider.getSaveFolder() + "/" + id + ".dat");
 		try{
 			f.getParentFile().mkdirs();
 			f.setWritable(true);
@@ -71,14 +71,14 @@ public class SpaceSavingUtils {
 	
 	public static void deleteFile(Integer id, World world){
 		if (world == null || world.getSaveHandler().getWorldDirectory() == null) return;
-		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + id + ".dat");
+		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + world.provider.getSaveFolder() + "/" + id + ".dat");
 		Undestructible.LOGGER.info("Deleting saved structure: " + f.getAbsolutePath());
 		f.delete();
 	}
 	
 	public static NBTTagCompound readFromFile(Integer id, World world){
 		if (world == null || world.getSaveHandler().getWorldDirectory() == null) return null;
-		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + id + ".dat");
+		File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + world.provider.getSaveFolder() + "/" + id + ".dat");
 		if (!f.exists()){return null;}
 		try{
 			DataInputStream s = new DataInputStream(new FileInputStream(f));
@@ -94,7 +94,7 @@ public class SpaceSavingUtils {
 	public static int firstAvailableID(World world){
 		int i = 0;
 		while (true){
-			File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + i + ".dat");
+			File f = new File(world.getSaveHandler().getWorldDirectory(), "Undestructible/" + world.provider.getSaveFolder() + "/" + i + ".dat");
 			if(!f.exists()) break;
 			i++;			
 		}
