@@ -12,12 +12,8 @@ import com.headfishindustries.undestructible.Undestructible;
 import com.headfishindustries.undestructible.WorldStructure;
 import com.headfishindustries.undestructible.WorldStructure.BlockData;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 

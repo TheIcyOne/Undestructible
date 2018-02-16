@@ -1,23 +1,13 @@
 package com.headfishindustries.undestructible;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class WorldStructure {
 	
@@ -59,7 +49,6 @@ public class WorldStructure {
 				for (int z = Math.min(start.getZ(), end.getZ()); z<=Math.max(start.getZ(), end.getZ()); z++){
 					pos = new BlockPos(x, y, z);
 					NBTTagCompound block = blocks.getCompoundTag(pos.toString());
-					Boolean b = blocks.hasKey(pos.toString());
 					BlockData bd = BlockData.fromNBT(block);
 					blockMap.put(pos, bd);
 				}
