@@ -1,4 +1,4 @@
-package com.headfishindustries.undestructible;
+package com.headfishindustries.undestructible.utils;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.headfishindustries.undestructible.Undestructible;
+import com.headfishindustries.undestructible.WorldStructure;
 import com.headfishindustries.undestructible.WorldStructure.BlockData;
 
 import net.minecraft.block.Block;
@@ -21,6 +23,8 @@ import net.minecraft.world.World;
 
 public class SpaceSavingUtils {
 	/** Takes input of 2 corner positions, returns an NBT tag holding all blocks within the area.**/
+	//TODO: Config for min/max on these settings.
+	//TODO: Config for moving a structure to a new position
 	public static NBTTagCompound areaToNBT(World world, BlockPos start, BlockPos end, int ticksPer, int blocksPer){
 		NBTTagCompound tag = new NBTTagCompound();
 		BlockPos pos;

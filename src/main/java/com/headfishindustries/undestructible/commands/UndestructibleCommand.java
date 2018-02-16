@@ -1,4 +1,10 @@
-package com.headfishindustries.undestructible;
+package com.headfishindustries.undestructible.commands;
+
+import java.util.List;
+
+import com.headfishindustries.undestructible.Undestructible;
+import com.headfishindustries.undestructible.WorldStructure;
+import com.headfishindustries.undestructible.utils.SpaceSavingUtils;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -29,9 +35,9 @@ public class UndestructibleCommand extends CommandBase{
 			return;
 		}
 		if (sender.canUseCommand(this.getRequiredPermissionLevel(), this.getName())){
-			switch(args[0]){
+			switch(args[0].toLowerCase()){
 			case "help":
-				sender.sendMessage(new TextComponentString("You're an idiot. Anyhow, use /undestructible add <startX> <y> <z> <endX> <y> <z> [ticksEach] [blocksEach]."));
+				sender.sendMessage(new TextComponentString("Options available: help, add, remove, pos, nextid"));
 				break;
 			case "add":
 				NBTTagCompound tag = SpaceSavingUtils.areaToNBT(sender.getEntityWorld(), new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])), new BlockPos(Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6])), Integer.parseInt(args[7]), Integer.parseInt(args[8]));
@@ -46,6 +52,12 @@ public class UndestructibleCommand extends CommandBase{
 			case "pos":
 				sender.sendMessage(new TextComponentString(sender.getPosition().toString()));
 				break;
+			case "nextid":
+				sender.sendMessage(new TextComponentString("Next available ID :" + SpaceSavingUtils.firstAvailableID(sender.getEntityWorld())));
+			case "modify":
+				//TODO: Allow editing of structures. Should probably use a GUI at some point.
+			case "visualise":
+				//TODO: Shadow renders of structures.
 			default:
 				
 			}
@@ -55,6 +67,7 @@ public class UndestructibleCommand extends CommandBase{
 		}
 		
 	}
+
 	
 	@Override
 	public boolean checkPermission(MinecraftServer server, ICommandSender sender){

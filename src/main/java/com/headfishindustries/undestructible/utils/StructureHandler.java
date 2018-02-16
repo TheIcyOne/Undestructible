@@ -1,4 +1,4 @@
-package com.headfishindustries.undestructible;
+package com.headfishindustries.undestructible.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.headfishindustries.undestructible.WorldStructure;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;

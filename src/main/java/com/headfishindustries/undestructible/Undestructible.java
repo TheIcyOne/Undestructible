@@ -3,6 +3,9 @@ package com.headfishindustries.undestructible;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.headfishindustries.undestructible.commands.UndestructibleCommand;
+import com.headfishindustries.undestructible.utils.StructureHandler;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -28,4 +31,6 @@ public class Undestructible {
 	public void startServer(FMLServerStartingEvent e){
 		e.registerServerCommand(new UndestructibleCommand());
 	}
+	
+
 }
